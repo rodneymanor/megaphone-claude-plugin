@@ -1,0 +1,10 @@
+{
+  "name": "megaphone",
+  "displayName": "Megaphone",
+  "version": "0.2.0",
+  "description": "Set up your Megaphone content bank and create one script in your custom voice for your iPhone library.",
+  "author": {
+    "name": "Megaphone"
+  },
+  "license": "UNLICENSED"
+}

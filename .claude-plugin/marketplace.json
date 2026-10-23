@@ -1,0 +1,14 @@
+{
+  "name": "megaphone-plugins",
+  "description": "Megaphone tools for creating a script in your own voice",
+  "owner": {
+    "name": "Megaphone"
+  },
+  "plugins": [
+    {
+      "name": "megaphone",
+      "source": "./plugins/megaphone",
+      "description": "Set up your Megaphone content bank and keep one script for your iPhone library"
+    }
+  ]
+}
