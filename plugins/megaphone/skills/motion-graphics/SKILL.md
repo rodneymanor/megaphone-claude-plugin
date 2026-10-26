@@ -9,7 +9,7 @@ Create the requested graphics with the bundled Claude Video 2 reference styles.
 The iPhone owns recording, cuts and final video editing. Generate graphics for
 those existing sections; do not silently replace the recorded video.
 
-This is a cloud-render pilot. The stable 0.2 connector lacks motion job tools.
+This is a cloud-render pilot. Old connector grants lack the motion permission.
 For phone-triggered jobs, follow the repository's `cloud/motion-routine.md` only
 when the four authenticated `megaphone_motion_*` tools are actually available.
 They require a deployed server and the account's explicit motion permission.

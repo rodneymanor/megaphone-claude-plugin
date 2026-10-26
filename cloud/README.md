@@ -1,11 +1,11 @@
 # Claude cloud motion pilot
 
 The existing plugin owns Claude's Megaphone account connection. The iPhone's
-`BrollJobService` and backend `broll-jobs.ts` currently own the job queue, which
-requires a paired-Mac claimant; the hosted MCP has no media job/upload tools.
-Consequently a new skill alone cannot turn the current Mac button into a cloud
-trigger. First prove rendering in Claude cloud, then extend that existing queue
-and authenticated connection rather than adding a second job store.
+`BrollJobService` and backend `broll-jobs.ts` own the job queue. Before this pilot,
+that queue required a paired Mac and the hosted MCP exposed no media job tools.
+The deployed motion permission now extends that same queue and connection;
+there is no second job store. Phone installation and placement acceptance remain
+separate from server deployment.
 
 ## Run the bounded proof
 
@@ -46,9 +46,9 @@ must not run the sales or daily-content routines. No subagents.
 - `package.json`/lock, `setup.sh` and `smoke.py` are the reproducible execution
   environment and the test of the requested renderer. No new hosting dependency,
   Vercel renderer, persistent credential or customer data store is introduced.
-- The existing plugin version remains 0.2.0 until the pilot passes and the
-  customer trigger/delivery contract is implemented. Do not describe this as an
-  automatic phone feature yet.
+- The existing plugin version remains 0.2.0 during the owner pilot. A customer
+  release still requires updated-phone installation and placement acceptance.
+  Do not describe installing the skill as automatic phone activation.
 - After cloud acceptance, wire an explicit phone request to a user-authorized
   Claude routine trigger; have it use the same account's job claim/upload/result
   operations. Keep credentials private, preserve the local B-roll route, and
@@ -102,3 +102,35 @@ notification is implemented. If Claude's usage allowance or token is rejected,
 check the cloud run and cancel the saved pending job before explicitly trying
 again. Never automatically retry an uncertain trigger. The separate local Mac
 B-roll flow remains available.
+
+## October 26 production activation and live handoff
+
+Backend commit `a43e8a38e` is deployed to `www.gencapp.pro`
+(`dpl_EcwvGCLyWfFk7uNYheeK8GE6qPBV`). The matching hosted MCP is deployed
+(`dpl_UdvEovuZ4oFWrMGhdxfc6JYCEeRv`) and served through
+`joinmegaphone.com/mcp`. Public discovery advertises `megaphone:motion`;
+unauthenticated MCP access returns 401. A temporary read/motion acceptance grant
+verified account identity, all four motion tools, rejection of a missing-job
+claim, a live motion-queue read and denied direct Firestore authorization-record
+access. The temporary grant was revoked after the checks.
+
+The owner's existing Claude Megaphone connector was reauthorized with the motion
+permission; its same connector ID now exposes 28 tools. The dedicated
+[Megaphone motion graphics routine](https://claude.ai/code/routines/trig_01EzpsLU9yz68Mo44WjXuLQX)
+is active with only an API trigger and the Megaphone connector. Its scoped token
+is stored privately outside the repositories. The restricted cloud environment
+also permits the existing upload host `ny-s3.storage.bunnycdn.com`.
+
+One synthetic, nine-second job proved API fire → exact-job claim → cloud render
+→ storage upload → server-verified `sent` state, without another API fire:
+[completed run](https://claude.ai/code/session_0165sK79yXA1aRAf1LrkNLJ7).
+Job `hwP6FmAeqKLvqKS9suPD`, video `dpl26abc`, was created at 17:05:33.490 UTC
+and marked sent at 17:07:06.967 UTC (about 93.5 seconds). Its MP4 is 224,593 bytes,
+1920×1080 H.264, 30 fps, 270 frames and 9 seconds. The task independently
+downloaded it, verified its byte count, fully decoded it and read back the exact
+section ID/text and `place: split` metadata. SHA-256:
+`82ec597637a8e3202a235f1f2fae6efb5ea8d07ee919b0d2523d4ec6c5dd104d`.
+Proof and the returned MP4 are retained in the ignored
+`output/cloud-acceptance-2026-10-26/` folder. This confirms cloud delivery, not
+physical iPhone placement. The updated phone build still needs its one-time
+Keychain connection and a real recording's placement/export acceptance.
