@@ -16,6 +16,18 @@ They require a deployed server and the account's explicit motion permission.
 Do not claim automatic phone delivery from merely installing the skill, invent
 tool names, or silently route cloud work to the local Mac renderer.
 
+## Shared-rule validation candidate
+
+The implementation awaiting route/device acceptance is in
+`cloud/candidates/motion-routine.md` (cloud) and
+`cloud/candidates/megaphone-broll.md` (Mac). Use one only when a validation job
+explicitly selects it. For those jobs, `references/EDIT-RULES.md` and
+`references/edit-rules.json` replace the old cadence/default-split planning
+instructions; run `cloud/plan_check.py` before render and after final clip gates.
+A job retains one route and one planner throughout retries. Routine jobs retain
+the current instructions until the documented coordinated cutover. Do not
+activate the candidate or trigger a live render merely by reading this skill.
+
 ## Runtime and inputs
 
 In the plugin repository, run `bash cloud/setup.sh` once, preferably as the cloud

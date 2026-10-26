@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "maximumFaceAbsence": 4.5,
+  "minimumShot": 1.5,
+  "maximumShot": 5.0,
+  "maximumMedianShot": 3.5,
+  "maximumFullShare": 0.3,
+  "minimumFaceOnlyShare": 0.1,
+  "maximumFaceOnlyShare": 0.25,
+  "switchWindow": 40.0,
+  "minimumSwitches": 6.0,
+  "maximumSwitches": 18.0,
+  "maximumPause": 0.3,
+  "keptPause": 0.2,
+  "maximumFirstWordStart": 0.5,
+  "leadingSpeechPadding": 0.05,
+  "minimumLength": 30.0,
+  "maximumLength": 55.0,
+  "minimumOpeningWords": 8,
+  "maximumOpeningWords": 14,
+  "minimumWordsPerSecond": 3.5,
+  "maximumCaptionWords": 3
+}
