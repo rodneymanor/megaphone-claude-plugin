@@ -9,10 +9,12 @@ Create the requested graphics with the bundled Claude Video 2 reference styles.
 The iPhone owns recording, cuts and final video editing. Generate graphics for
 those existing sections; do not silently replace the recorded video.
 
-This is a cloud-render pilot. An authenticated Megaphone connector does not yet
-provide a cloud trigger or a media-upload tool. Do not claim automatic phone
-delivery, invent tool names, or direct the customer to the local Mac renderer.
-Report the missing capability if a task requires it.
+This is a cloud-render pilot. The stable 0.2 connector lacks motion job tools.
+For phone-triggered jobs, follow the repository's `cloud/motion-routine.md` only
+when the four authenticated `megaphone_motion_*` tools are actually available.
+They require a deployed server and the account's explicit motion permission.
+Do not claim automatic phone delivery from merely installing the skill, invent
+tool names, or silently route cloud work to the local Mac renderer.
 
 ## Runtime and inputs
 
@@ -43,6 +45,8 @@ a normal text brief and return a standalone video.
    legibility, composition and incorrect content. In an interactive session, show
    the preview for approval before the final render. For an explicitly authorized
    automated render test, the supplied brief is approval for that test only.
+   For a verified phone-triggered job, the phone request authorizes its render;
+   the user reviews and places the returned clips in Megaphone.
 5. Render with `hyperframes render <project> -o <output.mp4> -q high -w 2`.
    Verify dimensions, duration, frame rate and decoding with FFprobe/FFmpeg.
    Run `upstream/scripts/pacing_check.py`; for loops, run `loop_check.py` too.

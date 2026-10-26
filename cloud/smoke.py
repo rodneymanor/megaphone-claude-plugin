@@ -32,8 +32,8 @@ def main():
     project.mkdir(parents=True)
     for name in ('index.html', 'studio.js'):
         shutil.copyfile(SOURCE / 'styles/swiss-grid' / name, project / name)
-    # Avoid network dependence inside Chromium for this runtime proof. The test
-    # uses Liberation Sans/Arial; customer pieces retain their selected font.
+    # Serve GSAP locally. Request a system-font fallback; HyperFrames' compiler
+    # may still fetch/inject Inter before Chromium starts.
     html = (project / 'index.html').read_text()
     html = '\n'.join(line for line in html.splitlines() if 'fonts.googleapis.com' not in line)
     html = html.replace("'Inter', sans-serif", "'Liberation Sans', Arial, sans-serif")
@@ -69,7 +69,7 @@ def main():
         'bytes': video.stat().st_size, 'sha256': hashlib.sha256(video.read_bytes()).hexdigest(),
         'metadata': probe, 'decode_pass': True, 'checks': checks,
         'pass': all(checks.values()),
-        'scope': 'Runtime proof with a system font; no account upload or iPhone placement tested.',
+        'scope': 'Runtime proof; HyperFrames may fetch fonts. No account upload or iPhone placement tested.',
     }
     (OUT / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(json.dumps(receipt, indent=2))
