@@ -3,6 +3,8 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -89,6 +91,18 @@ class PlanCheckTests(unittest.TestCase):
     def test_changed_source_words_fail(self):
         p = plan(); source = copy.deepcopy(p['sections']); source[0]['text'] = 'Changed words'
         self.assertTrue(checker.check(p, POLICY, source)[0])
+
+
+    def test_diagnostic_only_exit_cannot_authorize_render(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'plan.json'; path.write_text(json.dumps(plan()))
+            diagnostic = subprocess.run([sys.executable, str(ROOT / 'plan_check.py'), str(path)], capture_output=True, text=True)
+            self.assertEqual(diagnostic.returncode, 2)
+            self.assertNotIn('PASS required checks', diagnostic.stdout)
+            source = Path(folder) / 'source.json'; source.write_text(json.dumps(plan()))
+            verified = subprocess.run([sys.executable, str(ROOT / 'plan_check.py'), str(path), '--source', str(source)], capture_output=True, text=True)
+            self.assertEqual(verified.returncode, 0)
+            self.assertIn('PASS required checks', verified.stdout)
 
 if __name__ == '__main__':
     unittest.main()

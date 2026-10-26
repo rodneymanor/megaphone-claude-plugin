@@ -2,7 +2,7 @@
 
 Usage: plan_check.py PLAN [--source SOURCE] [--route mac|cloud] [--final]
 SOURCE is the unchanged MEGAPHONE SECTIONS export or JSON {sections:[id,start,end]}.
-Omitting SOURCE is for historical diagnostics only; identity is UNAVAILABLE.
+Omitting SOURCE is for historical diagnostics only; identity is UNAVAILABLE (exit 2).
 """
 import argparse
 import json
@@ -186,7 +186,7 @@ def main():
             for value in values:
                 print(f'{label} {value}')
         print('FAIL required checks' if failures else 'PASS required checks' if args.source else 'DIAGNOSTIC ONLY; source not verified')
-        return 1 if failures else 0
+        return 1 if failures else 0 if args.source else 2
     except (ValueError, KeyError, TypeError, OSError) as e:
         print(f'FAIL invalid input: {e}')
         return 1

@@ -19,9 +19,10 @@ The app bundles byte-identical `MegaphoneApp/Resources/EditRules.json` offline.
 
 ## Checks already run
 
-`python3 -m unittest discover -s cloud/tests -v`: 13 tests passed, including policy
+`python3 -m unittest discover -s cloud/tests -v`: 14 tests passed, including policy
 parity with the sibling app checkout, changed IDs/times/words, unsupported input,
 nonfinite times, overlap, continuous full graphics, final tags/layout/duration,
+and a nonzero diagnostic-only exit when source verification is missing,
 missing files/gates and same-layout visual changes. Python syntax compilation
 passed. No model call, render, upload, job claim or runtime cutover was performed.
 
