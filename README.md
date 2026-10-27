@@ -4,7 +4,7 @@ The stable 0.2.0 release packages the Megaphone connector and two customer skill
 
 The package under `plugins/megaphone/` matches version 0.2.0 tested in Claude chat and on an iPhone on October 23, 2026. The approved script was imported into the phone library and matched the connector's synced library readback.
 
-In Claude, add `https://github.com/rodneymanor/megaphone-claude-plugin` under **Customize → Plugins → Add plugin → Add marketplace**, install **Megaphone**, and connect your Megaphone account from the plugin's **Connectors** tab. Approval happens on your iPhone. Say “Help me set up Megaphone,” then “Write a Megaphone script about [topic].” A script is sent only after you keep the exact text; open Megaphone to import it.
+In Claude, add `https://github.com/rodneymanor/megaphone-claude-plugin` under **Customize → Plugins → Add plugin → Add marketplace**, install **Megaphone**, and connect your Megaphone account from the plugin's **Connectors** tab. Approval happens on your iPhone. Say “Help me set up Megaphone,” then “Write a Megaphone script about [topic].” On main, Megaphone's worker writes, checks and saves the script straight to your iPhone library; there is no import step. (The 0.2.0 release asset still uses the older keep-then-import flow.)
 
 The `Megaphone-0.2.0.zip` release asset is the fallback upload for Claude's plugin dialog. Validate both the plugin and marketplace before release:
 
