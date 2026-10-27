@@ -10,8 +10,12 @@ The iPhone owns recording, cuts and final video editing. Generate graphics for
 those existing sections; do not silently replace the recorded video.
 
 This is a cloud-render pilot. Old connector grants lack the motion permission.
-For phone-triggered jobs, follow the repository's `cloud/motion-routine.md` only
-when the four authenticated `megaphone_motion_*` tools are actually available.
+For jobs opened from the phone's Add motion graphics action, follow the
+repository's `cloud/motion-handoff.md` using the prepared exact-job packet.
+The user taps Send in Claude Code to start the cloud session. It uses the same
+Megaphone MCP connector; never ask for a routine Fire URL or token.
+Legacy API-triggered sessions already in flight retain `cloud/motion-routine.md`.
+Both paths require the four authenticated `megaphone_motion_*` tools to be available.
 They require a deployed server and the account's explicit motion permission.
 Do not claim automatic phone delivery from merely installing the skill, invent
 tool names, or silently route cloud work to the local Mac renderer.

@@ -7,6 +7,35 @@ The deployed motion permission now extends that same queue and connection;
 there is no second job store. Phone installation and placement acceptance remain
 separate from server deployment.
 
+## Current mobile trigger — replaces the URL/token form
+
+The phone now queues this recording's existing motion job and opens Claude Code
+with `repo`, `branch`, `mode` and an exact-job prompt prefilled. The creator taps
+**Send** in Claude, using the existing Megaphone MCP connector. The session
+claims that job, renders and uploads through MCP. Return to the original phone
+recording and tap **Place B-roll**. The phone never requests or stores a new
+routine URL/token, and it does not call the routine-fire API.
+
+The app's **Open Claude** action reopens the same queued job. Its style is retained
+in the existing server-owned section export; no second job/style store is added.
+An opened composer is not a running render: the job stays queued until MCP claims
+it. If the link cannot open, the queued job remains available to reopen or cancel.
+A working job cannot open another new render session. The server still rejects a
+second claim, including two composers opened before the first claim completes.
+
+Cloud handler: `cloud/motion-handoff.md`. Claude Code access and the existing
+connected Megaphone tools (including motion permission) must be available in the
+selected cloud environment. Existing GitHub/cloud-environment access is still
+needed for this renderer. No phone token setup is a substitute for those checks.
+
+The API-only pilot described below is historical. Its URL/token setup is
+superseded for new mobile jobs; do not follow those old phone-connection steps.
+Existing in-flight API runs and the edit-rule acceptance/cutover are separate.
+Do not revoke an existing run's credential or activate a candidate as part of
+this source change. No new scheduled poller, dispatcher or renderer is created.
+
+Official mobile handoff: https://support.claude.com/en/articles/14898120-open-the-claude-mobile-app-with-a-link
+
 ## Run the bounded proof
 
 Select `rodneymanor/megaphone-claude-plugin` in a **Cloud** Claude Code session.
@@ -79,7 +108,7 @@ and decoded it, and inspected an extracted contact sheet. No Vercel render was
 used. Matching phone/server source is prepared; live trigger/upload/placement
 acceptance remains pending activation and the account's motion permission.
 
-## Connect the phone after the reviewed app/server rollout
+## Historical API-only pilot setup (superseded for the phone)
 
 1. Reconnect the existing Megaphone connector and review its **motion graphics**
    permission. Old connector grants keep their original scope until you approve
@@ -132,5 +161,5 @@ section ID/text and `place: split` metadata. SHA-256:
 `82ec597637a8e3202a235f1f2fae6efb5ea8d07ee919b0d2523d4ec6c5dd104d`.
 Proof and the returned MP4 are retained in the ignored
 `output/cloud-acceptance-2026-10-26/` folder. This confirms cloud delivery, not
-physical iPhone placement. The updated phone build still needs its one-time
-Keychain connection and a real recording's placement/export acceptance.
+physical iPhone placement. The updated phone build now uses the MCP handoff above; its physical-phone
+handoff/Send/placement/export acceptance remains pending.
