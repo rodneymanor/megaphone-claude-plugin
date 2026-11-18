@@ -71,7 +71,7 @@ def check(plan, policy, source=None, route='mac', media_root=None):
         return ['Invalid/missing media set'], [], []
     if plan.get('hookCard') is not None and not isinstance(plan['hookCard'], dict):
         return ['Invalid hook card'], [], []
-    allowed = {'face', 'split', 'full'} | ({'overlay', 'greenscreen'} if route == 'mac' else set())
+    allowed = {'face', 'split', 'full'} | ({'overlay', 'greenscreen', 'shrink'} if route == 'mac' else set())
     ids, cursor = set(), 0.0
     for s in sections:
         if not isinstance(s, dict) or not isinstance(s.get('id'), str) or not s['id'].strip():
@@ -89,12 +89,52 @@ def check(plan, policy, source=None, route='mac', media_root=None):
         if layout not in allowed:
             failures.append('Unsupported layout: ' + s['id'])
         name = s.get('image') if layout == 'greenscreen' else s.get('clip')
-        if layout != 'face' and (not isinstance(name, str) or not name):
+        # Breakdown (style=breakdown): the phone draws a `card` itself, and `shrink` needs no file.
+        drawn = layout == 'shrink' or (layout in ('split', 'full') and isinstance(s.get('card'), dict) and not name)
+        if layout != 'face' and not drawn and (not isinstance(name, str) or not name):
             failures.append('Missing media identity: ' + s['id'])
         if layout == 'face' and (s.get('clip') or s.get('image')):
             failures.append('Face section still references media: ' + s['id'])
         if name and (Path(name).name != name or name in ('.', '..')):
             failures.append('Media must be a local filename: ' + s['id'])
+        if s.get('zoom') is not None and s['zoom'] not in ('punchIn', 'gradual', 'punch', 'jump'):
+            failures.append('Unsupported zoom: ' + s['id'])
+        if s.get('transition') is not None and s['transition'] not in ('cut', 'fade', 'pop'):
+            failures.append('Unsupported transition: ' + s['id'])
+        if s.get('look') is not None and (s['look'] not in ('bold', 'coolGirl', 'coolDude') or s['look'] == plan.get('style')):
+            failures.append('Unsupported look (or same as the plan style): ' + s['id'])
+        word = s.get('word')
+        if word is not None:
+            key = lambda t: re.sub(r'[^\w]', '', str(t)).lower()
+            if (layout != 'overlay' and not s.get('top') and not s.get('sticker')
+                    and not isinstance(s.get('card'), dict)) \
+                    or not isinstance(word, str) or not key(word) \
+                    or key(word) not in [key(t) for t in str(s.get('text', '')).split()]:
+                failures.append('Word must be one word of an overlay section: ' + s['id'])
+        frame = s.get('frame') if isinstance(s.get('frame'), dict) else {}
+        if frame.get('anchor') not in (None, 'head') or (frame.get('anchor') == 'head' and s.get('behind') is not True):
+            failures.append('Head anchor needs behind: true (and anchor must be "head"): ' + s['id'])
+        top = s.get('top')
+        if top is not None:
+            key = lambda t: re.sub(r'[^\w]', '', str(t)).lower()
+            words = [key(t) for t in str(s.get('caption') or s.get('text', '')).split()]
+            if not isinstance(top, str) or not top.strip() or any(key(t) not in words for t in top.split()):
+                failures.append('Top word must be words of the section: ' + s['id'])
+        sticker = s.get('sticker')
+        if sticker is not None:
+            key = lambda t: re.sub(r'[^\w]', '', str(t)).lower()
+            words = [key(t) for t in str(s.get('caption') or s.get('text', '')).split()]
+            if not isinstance(sticker, str) or len(sticker.split()) != 1 or key(sticker) not in words:
+                failures.append('Sticker must be one word of the section: ' + s['id'])
+        if s.get('mark') is not None and (s['mark'] not in ('circle', 'strike')
+                                          or (s['mark'] == 'circle' and layout != 'shrink')
+                                          or (s['mark'] == 'strike' and not top)):
+            failures.append('Mark: circle needs shrink, strike needs top: ' + s['id'])
+    # Behind-head words need the phone's cutout, which a green screen turns off for the whole video.
+    # (A split clip only turns it off while the split is on screen, and a behind word is never a split.)
+    if any(isinstance(s, dict) and s.get('behind') is True for s in sections) and any(
+            isinstance(s, dict) and s.get('layout') == 'greenscreen' for s in sections):
+        failures.append('Behind-head words need a plan with no green screen')
     if failures:
         return failures, warnings, unavailable
     if source is None:
@@ -111,7 +151,7 @@ def check(plan, policy, source=None, route='mac', media_root=None):
     previous = None
     for s in sections:
         duration = s['end'] - s['start']
-        key = (s['layout'], s.get('clip') or s.get('image'))
+        key = (s['layout'], s.get('clip') or s.get('image') or json.dumps(s.get('card'), sort_keys=True))
         if key == previous:
             shots[-1] += duration
         else:
@@ -121,8 +161,8 @@ def check(plan, policy, source=None, route='mac', media_root=None):
         if full_run > policy['maximumFaceAbsence'] + 0.001:
             failures.append('Continuous full graphics over limit at ' + s['id'])
         full += duration if s['layout'] == 'full' else 0
-        face += duration if s['layout'] == 'face' else 0
-        if media_root is not None and s['layout'] != 'face':
+        face += duration if s['layout'] in ('face', 'shrink') else 0
+        if media_root is not None and s['layout'] not in ('face', 'shrink') and (s.get('clip') or s.get('image')):
             name = s.get('image') if s['layout'] == 'greenscreen' else s['clip']
             path = media_root / name
             try:

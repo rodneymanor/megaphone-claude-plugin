@@ -41,6 +41,36 @@ class PlanCheckTests(unittest.TestCase):
             p = plan(); p['sections'][0][key] = value
             self.assertTrue(checker.check(p, POLICY)[0])
 
+    def test_punch_jump_transition_and_behind_word(self):
+        p = plan(('face', 'overlay', 'face'))
+        p['sections'][0]['zoom'] = 'jump'
+        p['sections'][2]['zoom'] = 'punch'
+        o = p['sections'][1]
+        o.update(clip='mo-motion-abc123-01of01.mp4', text='we chat for hours', word='chat', transition='pop',
+                 frame={'x': 0.5, 'y': 0.27, 'w': 0.9, 'anchor': 'head'}, behind=True)
+        self.assertEqual(checker.check(p, POLICY, route='mac')[0], [])
+        for key, value in [('word', 'hours!'), ('word', 'missing'), ('transition', 'wipe'), ('behind', False)]:
+            q = copy.deepcopy(p); q['sections'][1][key] = value
+            self.assertEqual(bool(checker.check(q, POLICY, route='mac')[0]), key != 'word' or value != 'hours!', (key, value))
+        q = copy.deepcopy(p); q['sections'][0]['zoom'] = 'dolly'
+        self.assertTrue(checker.check(q, POLICY, route='mac')[0])
+        # Behind words next to a split clip are fine: the cutout is off only during the split.
+        q = copy.deepcopy(p); q['sections'][2].update(layout='split', clip='mb-motion-abc123-01of01.mp4', zoom=None)
+        self.assertNotIn('Behind-head words need a plan with no green screen', checker.check(q, POLICY, route='mac')[0])
+        # Behind words and a green screen in one plan: the phone's cutout would be off.
+        q = copy.deepcopy(p); q['sections'][2].update(layout='greenscreen', image='gs-abc123-01of01.png', clip=None, zoom=None)
+        self.assertIn('Behind-head words need a plan with no green screen', checker.check(q, POLICY, route='mac')[0])
+
+    def test_section_look(self):
+        def look_failures(value, style=None):
+            p = plan(); p['sections'][1]['look'] = value
+            if style: p['style'] = style
+            return [f for f in checker.check(p, POLICY)[0] if 'look' in f]
+        self.assertEqual(look_failures('coolGirl'), [])
+        self.assertEqual(look_failures(None), [])
+        self.assertTrue(look_failures('neon'))
+        self.assertTrue(look_failures('bold', style='bold'))
+
     def test_adjacent_full_clips_are_one_absence(self):
         self.assertTrue(checker.check(plan(('full', 'full', 'full')), POLICY)[0])
 
@@ -106,3 +136,43 @@ class PlanCheckTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class BreakdownPlanTests(unittest.TestCase):
+    """style=breakdown: the phone draws cards, the shrink and marks, so those sections have no file."""
+
+    def sections(self):
+        return [
+            dict(id='a', start=0, end=2, layout='split', text='either it got hacked',
+                 card={'kind': 'option', 'label': 'Option 1', 'title': 'hacked?'}),
+            dict(id='b', start=2, end=4, layout='shrink', text='I do not believe in conspiracies',
+                 top='conspiracies', mark='strike'),
+            dict(id='c', start=4, end=6, layout='full', text='nine times out of ten it takes longer',
+                 card={'kind': 'bars', 'bars': [{'label': 'a', 'value': 1}, {'label': 'b', 'value': 4}]}),
+            dict(id='d', start=6, end=8, layout='face', text='that is my advice', top='my advice', word='advice'),
+        ]
+
+    def test_breakdown_plan_passes(self):
+        p = {'v': 4, 'set': 'motion-abc123', 'style': 'breakdown', 'sections': self.sections()}
+        failures, _, _ = checker.check(p, POLICY)
+        self.assertEqual(failures, [])
+
+    def test_top_word_must_be_said(self):
+        sections = self.sections()
+        sections[3]['top'] = 'secret sauce'
+        failures, _, _ = checker.check({'v': 4, 'set': 'motion-abc123', 'sections': sections}, POLICY)
+        self.assertIn('Top word must be words of the section: d', failures)
+
+    def test_circle_needs_shrink(self):
+        sections = self.sections()
+        sections[0]['mark'] = 'circle'
+        failures, _, _ = checker.check({'v': 4, 'set': 'motion-abc123', 'sections': sections}, POLICY)
+        self.assertIn('Mark: circle needs shrink, strike needs top: a', failures)
+
+
+class BreakdownStickerTests(unittest.TestCase):
+    def test_sticker_must_be_a_word_of_the_line(self):
+        sections = [dict(id='a', start=0, end=2, layout='face', text='they never tell you why', sticker='why?', word='why'),
+                    dict(id='b', start=2, end=4, layout='face', text='so you guess', sticker='secret')]
+        failures, _, _ = checker.check({'v': 4, 'set': 'motion-abc123', 'sections': sections}, POLICY)
+        self.assertEqual(failures, ['Sticker must be one word of the section: b'])

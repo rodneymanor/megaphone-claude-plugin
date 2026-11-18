@@ -35,7 +35,7 @@ Use the selected route when checking:
 
     python3 cloud/plan_check.py PLAN --source SOURCE --route cloud
 
-The Mac uses the absolute plugin checkout path for this command and `--route mac`.
+The Mac engine runs it as `python3 plan_check.py` (a link in its html-broll folder) with `--route mac`.
 Check before render. Allow at most two repair passes after the initial plan.
 A required FAIL stops the job; warnings do not trigger endless repairs. After
 clip gates, update dropped sections to face, then run the same command with
@@ -43,7 +43,7 @@ clip gates, update dropped sections to face, then run the same command with
 available duration too. Never deliver on a required failure. Preserve output as
 `plan-check-before.txt` and `plan-check-final.txt` using the session's file tools.
 
-The Mac cadence alternation/quotas and cloud default-split planning instruction
-are superseded by this policy only after the documented verification cutover.
-Before that, use these instructions in explicitly requested candidate test jobs.
+On the Mac this policy replaced the old cadence alternation/quotas on 2026-10-26
+(engine megaphone-broll v12) for every job and every look. The cloud route keeps its
+own planning instruction until its own cutover.
 Do not run both planners for one job. Existing in-flight jobs retain their rules.
