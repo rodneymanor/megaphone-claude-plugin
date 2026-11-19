@@ -14,22 +14,22 @@ yellow key words, jump zooms, a white hook pill and one key line on a white pill
 - Every section is `face`. No `card`, `top`, `sticker`, `mark`, `split`, `full`, `shrink`, `greenscreen` or `overlay`.
   `clip`, `poster`, `scene` and `n` are null.
 - `zoom`: `jump` or null. On most line changes the shot jumps in, then back out: `jump` on one section,
-  null on the next, and so on. **null on section 1** (the hook). The tightest shot is on the `pill` line: that section
-  always has `jump`, and the section just before it is null (wide), so the pill line jumps in.
+  null on the next, and so on. **null on section 1** (the hook). The `pill` line always has `jump`, and
+  the section just before it is null (wide), so the pill line jumps in from a wide shot.
 - `emphasis`: 0–1 word, on about half the sections: the word the line turns on ("tool", "rich", "problem").
   The phone paints it yellow, at the caption's size.
 - `hookCard`: line 1 is 3–6 words that state the hook (`size` `medium` or `large`), lowercase; fewer only
   when the spoken hook (section 1) is shorter. An optional line 2 in `size` `small` adds a short aside
-  ("(or waste thousands)"). Line 1 uses words of section 1 (the spoken hook); line 2 uses words the
-  creator said in the video.
+  ("(or waste thousands)"). Line 1 is words in a row from section 1 (the spoken hook), as said; never
+  drop a "not" or "never" just before them. Line 2 uses words the creator said in the video.
 - `pill`: `true` on the one section that is the video's main question or rule ("What problem should I use
   AI to solve?"). **At most 1 `pill` per video**, never section 1. The phone shows that line on a white
   pill that builds word by word, in place of its captions. A video with no clear main question or
   rule has no pill.
 - `caption`: null, unless speech-to-text clearly misheard a word, or to mask a swear word ("f*cking").
-  Then it is the line with that fix, nothing else changed: the same words in the same order, never an
-  added or dropped "not", never a changed number. No other words on screen: the captions are
-  the creator's words.
+  Then it is the line with that fix, word for word: the same number of words in the same order (the
+  phone puts each caption word on a spoken word's time). Never change a "not" or "n't", a number or
+  an amount ("fifteen", "-5%"). No other words on screen: the captions are the creator's words.
 - `transition`: null. `sound`: null (the look has no sound effects).
 - Cadence: something changes every 2–4 s, through the zooms. EDIT-RULES.md's card and shot shares do not
   apply: this look has no cards.
