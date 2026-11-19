@@ -20,8 +20,9 @@ yellow key words, jump zooms, a white hook pill and one key line on a white pill
   The phone paints it yellow, at the caption's size.
 - `hookCard`: line 1 is 3–6 words that state the hook (`size` `medium` or `large`), lowercase; fewer only
   when the spoken hook (section 1) is shorter. An optional line 2 in `size` `small` adds a short aside
-  ("(or waste thousands)"). Line 1 is words in a row from section 1 (the spoken hook), as said; never
-  drop a "not" or "never" just before them. Line 2 uses words the creator said in the video.
+  ("(or waste thousands)"). Line 1 is words in a row from section 1 (the spoken hook), as said. Line 2
+  is words in a row from one section, as said. Never start after a "not" or "never" in that line, and
+  keep numbers and amounts as said. No line fits: no hook card (`"lines": []`).
 - `pill`: `true` on the one section that is the video's main question or rule ("What problem should I use
   AI to solve?"). **At most 1 `pill` per video**, never section 1. The phone shows that line on a white
   pill that builds word by word, in place of its captions. A video with no clear main question or
