@@ -20,13 +20,15 @@ yellow key words, jump zooms, a white hook pill and one key line on a white pill
   The phone paints it yellow, at the caption's size.
 - `hookCard`: line 1 is 3–6 words that state the hook (`size` `medium` or `large`), lowercase; fewer only
   when the spoken hook (section 1) is shorter. An optional line 2 in `size` `small` adds a short aside
-  ("(or waste thousands)"). Words come from the hook the creator said.
+  ("(or waste thousands)"). Line 1 uses words of section 1 (the spoken hook); line 2 uses words the
+  creator said in the video.
 - `pill`: `true` on the one section that is the video's main question or rule ("What problem should I use
   AI to solve?"). **At most 1 `pill` per video**, never section 1. The phone shows that line on a white
   pill that builds word by word, in place of its captions. A video with no clear main question or
   rule has no pill.
 - `caption`: null, unless speech-to-text clearly misheard a word, or to mask a swear word ("f*cking").
-  Then it is the line with that fix, nothing else changed. No other words on screen: the captions are
+  Then it is the line with that fix, nothing else changed: the same words in the same order, never an
+  added or dropped "not", never a changed number. No other words on screen: the captions are
   the creator's words.
 - `transition`: null. `sound`: null (the look has no sound effects).
 - Cadence: something changes every 2–4 s, through the zooms. EDIT-RULES.md's card and shot shares do not
