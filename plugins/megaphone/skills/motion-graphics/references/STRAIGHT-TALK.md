@@ -21,16 +21,18 @@ yellow key words, jump zooms, a white hook pill and one key line on a white pill
 - `hookCard`: line 1 is 3–6 words that state the hook (`size` `medium` or `large`), lowercase; fewer only
   when the spoken hook (section 1) is shorter. An optional line 2 in `size` `small` adds a short aside
   ("(or waste thousands)"). Line 1 is words in a row from section 1 (the spoken hook), as said. Line 2
-  is words in a row from one section, as said. Never start after a "not" or "never" in that line, and
-  keep numbers and amounts as said. No line fits: no hook card (`"lines": []`).
+  is words in a row from one section, as said. A line keeps the claim as the creator meant it: never
+  start after a "not" or "never" in that line, keep a whole amount ("one hundred and fifty dollars")
+  and any condition that limits the claim ("until the trial ends"), and never turn a question the
+  creator answers "no" into a statement. No line fits: no hook card (`"lines": []`).
 - `pill`: `true` on the one section that is the video's main question or rule ("What problem should I use
   AI to solve?"). **At most 1 `pill` per video**, never section 1. The phone shows that line on a white
   pill that builds word by word, in place of its captions. A video with no clear main question or
   rule has no pill.
 - `caption`: null, unless speech-to-text clearly misheard a word, or to mask a swear word ("f*cking").
   Then it is the line with that fix, word for word: the same number of words in the same order (the
-  phone puts each caption word on a spoken word's time). Never change a "not" or "n't", a number or
-  an amount ("fifteen", "-5%"). No other words on screen: the captions are the creator's words.
+  phone puts each caption word on a spoken word's time). Never change a "not" or "n't", a number, an
+  amount or its unit ("fifteen dollars", "-5%"), and never move words. Mask swear words only. No other words on screen: the captions are the creator's words.
 - `transition`: null. `sound`: null (the look has no sound effects).
 - Cadence: something changes every 2–4 s, through the zooms. EDIT-RULES.md's card and shot shares do not
   apply: this look has no cards.
