@@ -15,8 +15,8 @@ Split screens and simple cards that explain the point (MegaphoneApp PROJ-844).
     thing the line names. `clip`, `poster`, `scene` and `n` are null; `gate` is `"pass"`.
   - `full`: a `bars` card only (a comparison the line makes). At most 1 per video, at most 4 s.
   - `shrink`: the speaker shrinks into a box on black. For a punch line or a "no" ("I don't believe in…",
-    "they just make you guess"). At most 2 per video, never section 1, never two in a row. Optional
-    `"mark": "circle"` (a red ring around the box) or, with a `top`, `"mark": "strike"` (a red line through it).
+    "they just make you guess"). At most 2 per video, never section 1, never two in a row. Optional, with a
+    `top`: `"mark": "strike"` (a red line through it). No red ring around the box (retired, PROJ-885).
   - `greenscreen`: proof from a real public page (rules under Green screen; Pass 2 step 6b). At most 2.
   - No `overlay`.
 - `card` (split, full, and a sticker on face), one of these kinds. **Words:** every word on a card is a word of the
