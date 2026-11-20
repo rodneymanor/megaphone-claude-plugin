@@ -63,8 +63,11 @@ server PROJ-892). The phone draws it; the plan sends only words. Contract: Megap
   it pops the card in. Each later word starts the card's next move.
 - `label` ≤ 3 words, `title` ≤ 4, `sub` ≤ 6, an item `name` ≤ 4. Words of the section's text or `caption`; you may
   change a word's form ("post" → "posted"). Never a new name, number or claim.
-- `value`: a number or amount exactly as the section says it ("300K", "$200", "22%", "7 min", "×2"). The same
-  number, the same %, the same currency. Never made up, never rounded. No number said → no `value` kind.
+- `value`: a number or amount exactly as the section says it ("300K", "$200", "22%", "7 min", "×2"). Write
+  numbers as digits ("7 min", not "seven min"): the phone counts digits up. The same number, the same %, the
+  same currency and unit as that one spoken amount ("200 dollars for 50 videos": "$200" or "50 videos", never
+  "$50"). Never made up, never rounded. No number said → no `value` kind. A number in a `label`, `title`,
+  `sub` or item `name` follows the same rule.
 - `icon`: one of `chart, money, time, content, camera, video, chat, user, users, check, cross, up, down, star,
   heart, fire, bolt, book, tag, gift, target, loop, lock, mail, phone, code, spark, megaphone, calendar, bell,
   eye, idea`, or null. The phone draws its own plain glyph. No real logos.

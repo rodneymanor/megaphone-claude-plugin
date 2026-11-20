@@ -66,7 +66,8 @@ server PROJ-892). The phone draws it; the plan sends only words. Contract: Megap
   `{"kind": "stat", "words": ["views"], "label": "views", "title": null, "sub": null, "value": "300K", "icon": null, "items": []}`.
   Each kind needs the fields it lists below. Leave the rest null, and `items` [].
 - Where: only on a plain `face` section (no card, top, sticker, mark or shrink). Never section 1 (the hook)
-  or the last section (the CTA). One at a time: a section with no pop-up between two pop-ups.
+  or the last section (the CTA). One at a time: between two pop-ups, at least one face rest (a plain `face`
+  section with no pop-up). A `full`, card or shrink section between them is not a rest.
 - On screen 1.5–4 s: only on a section of at least 1.5 s. The phone ends it at the section end, at most 4 s.
 - Use one only when the line has a clear thing to show. Match the moment:
   - a number said → `delta` (it went up), `stat` (one number), `count` (a number of things);
@@ -81,8 +82,11 @@ server PROJ-892). The phone draws it; the plan sends only words. Contract: Megap
   it pops the card in. Each later word starts the card's next move.
 - `label` ≤ 3 words, `title` ≤ 4, `sub` ≤ 6, an item `name` ≤ 4. Words of the section's text or `caption`; you may
   change a word's form ("post" → "posted"). Never a new name, number or claim.
-- `value`: a number or amount exactly as the section says it ("300K", "$200", "22%", "7 min", "×2"). The same
-  number, the same %, the same currency. Never made up, never rounded. No number said → no `value` kind.
+- `value`: a number or amount exactly as the section says it ("300K", "$200", "22%", "7 min", "×2"). Write
+  numbers as digits ("7 min", not "seven min"): the phone counts digits up. The same number, the same %, the
+  same currency and unit as that one spoken amount ("200 dollars for 50 videos": "$200" or "50 videos", never
+  "$50"). Never made up, never rounded. No number said → no `value` kind. A number in a `label`, `title`,
+  `sub` or item `name` follows the same rule.
 - `icon`: one of `chart, money, time, content, camera, video, chat, user, users, check, cross, up, down, star,
   heart, fire, bolt, book, tag, gift, target, loop, lock, mail, phone, code, spark, megaphone, calendar, bell,
   eye, idea`, or null. The phone draws its own plain glyph. No real logos.
