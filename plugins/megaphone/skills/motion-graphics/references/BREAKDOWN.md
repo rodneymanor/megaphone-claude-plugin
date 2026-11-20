@@ -1,5 +1,9 @@
 # Breakdown look (`style=breakdown`)
 
+> **Retired 2026-11-20 (PROJ-895). This file is a frozen backup. Do not edit it or copy from it.**
+> The live auto-edit rules are in Gen-C-A `apps/next14-standalone/src/server/auto-edit/rules/`.
+> Megaphone's server is the one source. Backup tag: `rules-backup-2026-11-20`.
+
 One copy of the Breakdown rules. The Mac engine (`megaphone-broll.md`) and the link flow (`link.md`, PROJ-841)
 both read this file. MegaphoneApp tickets: PROJ-844 (parent), PROJ-845..850. Source edits and values:
 `/Volumes/The Vault/Content/reel-edits/2026-11-17-megaphone-lane-v1/LANE.md`.

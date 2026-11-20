@@ -1,5 +1,9 @@
 # Straight Talk look (`style=straight-talk`)
 
+> **Retired 2026-11-20 (PROJ-895). This file is a frozen backup. Do not edit it or copy from it.**
+> The live auto-edit rules are in Gen-C-A `apps/next14-standalone/src/server/auto-edit/rules/`.
+> Megaphone's server is the one source. Backup tag: `rules-backup-2026-11-20`.
+
 One copy of the Straight Talk rules. Megaphone's server makes the plan from this file (Gen-C-A
 `scripts/sync-breakdown-rules.mjs` copies it). MegaphoneApp tickets: PROJ-864 (the look), PROJ-865 (the
 server plan), PROJ-866 (`pill`). Reference: Instagram reel Df0YcKxGtns. Plan:
