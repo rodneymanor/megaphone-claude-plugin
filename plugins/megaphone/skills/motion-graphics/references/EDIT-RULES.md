@@ -1,5 +1,9 @@
 # One Megaphone B-roll workflow
 
+> **Retired 2026-11-20 (PROJ-895). This file is a frozen backup. Do not edit it or copy from it.**
+> The live auto-edit rules are in Gen-C-A `apps/next14-standalone/src/server/auto-edit/rules/`.
+> Megaphone's server is the one source. Backup tag: `rules-backup-2026-11-20`.
+
 The numeric authority is `edit-rules.json` beside this file. The phone bundles an
 identical copy for offline use. This policy extends the existing job, renderer,
 clip tags and phone placement. Each job uses only its requested Mac or cloud
